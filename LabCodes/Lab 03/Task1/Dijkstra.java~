@@ -1,0 +1,86 @@
+import java.util.HashSet;
+import java.util.PriorityQueue;
+
+public class Dijkstra {
+ static int[][] adjMatrix;
+ static int[] d;
+ static Object[] parent;
+ static HashSet<Integer> set;
+ static PriorityQueue<Integer> queue;
+ static int vertexCount;
+ static int edgeCount;
+ public Dijkstra(int v, int e,int[] directory,int[][] a,Object[] p ) {
+  vertexCount = v;
+  edgeCount = e;
+  d = directory;
+  adjMatrix = a;
+  parent = p;
+  
+ }
+ public void buildMatrix(String locate) {
+  try {
+   String line = locate;
+   String[] edge2 = line.split(" ");
+   int x = Integer.parseInt(edge2[0]);
+   int y = Integer.parseInt(edge2[1]);
+   int z = Integer.parseInt(edge2[2]);
+   adjMatrix[x][y]= z; 
+  }catch(Exception e) {
+   System.out.print("Exception name: "+ e );
+  }
+ }
+ 
+ 
+ public static void dijkstra(int s) {
+  d = new int[vertexCount+1];
+  parent = new Object[vertexCount];
+  set = new HashSet<Integer>();
+  queue = new PriorityQueue<Integer>();
+  for(int v=0; v <vertexCount; v++) {
+   d[v] = 99999;
+   parent[v] = null;
+  }
+  d[s] = 0;
+  sortQueue();
+  while(!queue.isEmpty()) {
+   int minDistance = queue.poll();
+   //System.out.println(minDistance);
+   int u = findVertex(minDistance);
+   set.add(u);
+   for(int v = 0; v < vertexCount; v++) {
+    if((adjMatrix[u][v] != 0) && (!set.contains(v))) {
+     if(d[v] > d[u] + adjMatrix[u][v]) {
+      d[v] = d[u] + adjMatrix[u][v];
+      parent[v] = u;
+     }
+    }
+   }
+   sortQueue();
+  }
+ }
+ 
+ public static void sortQueue() {
+  queue.clear();
+  for(int v=1; v < vertexCount; v++) {
+   if(!set.contains(v))
+    queue.add(d[v]);
+  }
+ }
+ 
+ public static int findVertex(int minDistance) {
+  for(int v =1; v < vertexCount; v++) {
+   if(d[v]== minDistance) {
+    return v;
+   }
+  }
+  return -1;
+ }
+ public void missionCost(String cost) {
+
+  String[] edge = cost.split(" ");
+  int from = Integer.parseInt(edge[0]);
+  int to = Integer.parseInt(edge[1]);
+  dijkstra(from);
+  System.out.println(d[to]);
+ }
+}

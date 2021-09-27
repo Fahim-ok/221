@@ -1,0 +1,82 @@
+import java.util.HashSet;
+import java.util.PriorityQueue;
+
+public class BellmanFord {
+ static int[][] adjMatrix;
+ static int[] d;
+ static Object[] parent;
+ static HashSet<Integer> set;
+ static PriorityQueue<Integer> queue;
+ static int vertexCount;
+ static int edgeCount;
+ static int[] croad;
+ public BellmanFord(int v, int e,int[] directory,int[][] a,Object[] p ) {
+  vertexCount = v;
+  edgeCount = e;
+  d = directory;
+  adjMatrix = a; 
+  parent = p;
+  croad = new int[4];
+ }
+ public void buildMatrix(String locate) {
+  try {
+   String line = locate;
+   String[] edge2 = line.split(",");
+   int x = Integer.parseInt(edge2[0]);
+   int y = Integer.parseInt(edge2[1]);
+   int z = Integer.parseInt(edge2[2]);
+   if(!isClosed(x))
+    adjMatrix[x][y]= z;
+   
+  }catch(Exception e) {
+   System.out.print("Exception name: "+ e );
+  }
+ }
+ 
+ public void missionCost(String cost) {
+
+  String[] edge = cost.split(",");
+  int from = Integer.parseInt(edge[0]);
+  int to = Integer.parseInt(edge[1]);
+  //System.out.println(1);
+  bellmanFord(from);
+  System.out.println(d[to]);
+ }
+ public void closedRoad(String a) {
+  String[] edge1 = a.split(",");
+  for(int i = 0; i< croad.length; i++) {
+   croad[i]= Integer.parseInt(edge1[i]);
+  }
+ }
+ public boolean isClosed(int a) {
+  for(int i = 0; i < croad.length; i++) {
+   if(a == croad[i])
+    return true;
+  }
+  return false;
+ }
+ 
+ public void bellmanFord(int s) {
+  d = new int[vertexCount];
+  parent = new Object[vertexCount];
+  set = new HashSet<Integer>();
+  queue = new PriorityQueue<Integer>();
+  for(int v=0; v <vertexCount; v++) {
+   d[v] = 99999;
+   parent[v] = null;
+  }
+  d[s] = 0;
+  for(int count =0; count <vertexCount -1; count++) {
+   for(int u =0; u< vertexCount; u++) {
+    for(int v = 0; v < vertexCount; v++) {
+     if(adjMatrix[u][v] != 0) {
+      if(d[u] +adjMatrix[u][v] != 0) {
+       d[v] = d[u]+ adjMatrix[u][v];
+       parent[v] = u;
+      }
+     }
+    }
+   }
+  }
+ }
+}

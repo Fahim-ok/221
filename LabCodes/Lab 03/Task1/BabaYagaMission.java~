@@ -1,0 +1,35 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class BabaYagaMission {
+ public static void main(String[]args) throws FileNotFoundException  {
+  Dijkstra john;
+  Dijkstra john1;
+  String address = ("G:/Lab 3/Tasks/BabaYaga.txt");
+  try {
+  Scanner sc = new Scanner(new File(address));
+  String line1 = sc.nextLine();
+  String[] edge = line1.split(" ");
+  int vertexCount = Integer.parseInt(edge[0])+1;
+  int edgeCount = Integer.parseInt(edge[1]);
+  int mission = Integer.parseInt(edge[3]);
+  int []d = new int[vertexCount+1];
+  int[][] adjMatrix = new int[vertexCount+1][vertexCount+1]; 
+  Object[] parent = new Object[vertexCount+1];
+  john = new Dijkstra(vertexCount,edgeCount, d, adjMatrix, parent);
+  john1 = new Dijkstra(vertexCount,edgeCount, d, adjMatrix, parent);
+  for(int i =0; i < edgeCount;i++) {
+   String a =sc.nextLine();
+   john.buildMatrix(a);
+   john1.buildMatrix(a);
+  }
+  for(int i = 0; i < mission;i++)
+   john.missionCost(sc.nextLine());
+ 
+  }catch(Exception e) {
+   System.out.print("Exception name: "+ e );
+  }
+    
+ }
+}

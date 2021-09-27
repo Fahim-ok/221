@@ -1,0 +1,29 @@
+import java.io.File;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
+
+public class BabaYagaInDhaka {
+ public static void main(String[] args) throws FileNotFoundException {
+  BellmanFord john;
+  String address = "G:/Lab 3/Tasks/BabaYagaInDhaka.txt";
+  try {
+  Scanner sc = new Scanner(new File(address));
+  int vertexCount = Integer.parseInt(sc.nextLine());
+  int edgeCount = Integer.parseInt(sc.nextLine());
+  int []d = new int[vertexCount];
+  int[][] adjMatrix = new int[vertexCount][vertexCount]; //the values start from 1, 0 index is unused
+  Object[] parent = new Object[vertexCount];
+  john = new BellmanFord(vertexCount,edgeCount, d, adjMatrix, parent);
+  john.closedRoad(sc.nextLine());
+  for(int i =0; i < edgeCount;i++) {
+   String a =sc.nextLine();
+   john.buildMatrix(a);
+  }
+   john.missionCost(sc.nextLine());
+ 
+  }catch(Exception e) {
+   System.out.print("Exception name: "+ e );
+  }
+    
+ }
+}
